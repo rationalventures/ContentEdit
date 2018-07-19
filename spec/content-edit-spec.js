@@ -2358,6 +2358,22 @@
     });
   });
 
+  describe('`ContentEdit.Visualization()`', function () {
+    return it('should return an instance of Visualization`', function () {
+      var image;
+      image = new ContentEdit.Visualization({
+        'src': '/foo.jpg'
+      });
+      expect(image instanceof ContentEdit.Visualization).toBe(true);
+      image = new ContentEdit.Visualization({
+        'src': '/foo.jpg'
+      }, {
+        'href': 'bar'
+      });
+      return expect(image instanceof ContentEdit.Visualization).toBe(true);
+    });
+  });
+
   describe('`ContentEdit.Image.cssTypeName()`', function() {
     return it('should return \'image\'', function() {
       var image;
