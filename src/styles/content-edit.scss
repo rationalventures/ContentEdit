@@ -56,7 +56,7 @@ $highlight-color: #f39c12 !default;
     /* Types of element */
 
     &--type-image,
-    &--type-visualization,
+    &--type-visembed,
     &--type-video {
         background-repeat: no-repeat;
         position: relative;
@@ -185,7 +185,7 @@ $highlight-color: #f39c12 !default;
          * the inner style.
          */
         &.ce-element--type-image,
-        &.ce-element--type-visualization,
+        &.ce-element--type-visembed,
         &.ce-element--type-video {
             background-color: #333 !important;
             opacity: 1.0;
@@ -378,8 +378,9 @@ $highlight-color: #f39c12 !default;
  * expected that these styles will be extended if not overridden by the site
  * CSS.
  */
+visembed,
 .ce-element--type-image,
-.ce-element--type-visualization,
+.ce-element--type-visembed,
 .ce-element--type-video {
     display: block;
     margin-left: auto;

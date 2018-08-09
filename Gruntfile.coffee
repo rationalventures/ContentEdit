@@ -24,7 +24,7 @@ module.exports = (grunt) ->
                         'src/scripts/videos.coffee'
                         'src/scripts/lists.coffee'
                         'src/scripts/tables.coffee'
-                        'src/scripts/visualizations.coffee'
+                        'src/scripts/visembeds.coffee'
                     ]
 
             sandbox:
@@ -48,7 +48,7 @@ module.exports = (grunt) ->
                         'src/spec/videos.coffee'
                         'src/spec/lists.coffee'
                         'src/spec/tables.coffee'
-                        'src/spec/visualizations.coffee'
+                        'src/spec/visembeds.coffee'
 
                         ]
 

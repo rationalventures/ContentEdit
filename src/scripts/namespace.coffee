@@ -13,7 +13,7 @@ ContentEdit =
     # resized (`ContentEdit.ResizableElement`). The default values are used when
     # a min/max width has not been set using the custom attributes
     # `data-ce-max-width` and `data-ce-min-width`.
-    DEFAULT_MAX_ELEMENT_WIDTH: 800
+    DEFAULT_MAX_ELEMENT_WIDTH: 1600
     DEFAULT_MIN_ELEMENT_WIDTH: 80
 
     # Some elements such as images are dragged simply by clicking on them and

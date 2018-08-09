@@ -2358,19 +2358,19 @@
     });
   });
 
-  describe('`ContentEdit.Visualization()`', function () {
-    return it('should return an instance of Visualization`', function () {
+  describe('`ContentEdit.visembed()`', function () {
+    return it('should return an instance of visembed`', function () {
       var image;
-      image = new ContentEdit.Visualization({
+      image = new ContentEdit.visembed({
         'src': '/foo.jpg'
       });
-      expect(image instanceof ContentEdit.Visualization).toBe(true);
-      image = new ContentEdit.Visualization({
+      expect(image instanceof ContentEdit.visembed).toBe(true);
+      image = new ContentEdit.visembed({
         'src': '/foo.jpg'
       }, {
         'href': 'bar'
       });
-      return expect(image instanceof ContentEdit.Visualization).toBe(true);
+      return expect(image instanceof ContentEdit.visembed).toBe(true);
     });
   });
 
