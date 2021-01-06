@@ -1262,6 +1262,8 @@ class ContentEdit.ResizableElement extends ContentEdit.Element
         if corner
             @resize(corner, ev.clientX, ev.clientY)
         else
+            if ev.noContentMove
+                return
             # We add a small delay to prevent drag engaging instantly
             clearTimeout(@_dragTimeout)
             @_dragTimeout = setTimeout(

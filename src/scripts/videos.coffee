@@ -134,6 +134,7 @@ class ContentEdit.Video extends ContentEdit.ResizableElement
         'Static': ContentEdit.Element._dropBoth
         'Text': ContentEdit.Element._dropBoth
         'Video': ContentEdit.Element._dropBoth
+        'Visembed': ContentEdit.Element._dropBoth
 
     # List of allowed drop placements for the class, supported values are:
     @placements: ['above', 'below', 'left', 'right', 'center']

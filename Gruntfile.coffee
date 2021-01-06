@@ -25,6 +25,7 @@ module.exports = (grunt) ->
                         'src/scripts/lists.coffee'
                         'src/scripts/tables.coffee'
                         'src/scripts/visembeds.coffee'
+                        'src/scripts/datacells.coffee'
                     ]
 
             sandbox:
@@ -49,7 +50,6 @@ module.exports = (grunt) ->
                         'src/spec/lists.coffee'
                         'src/spec/tables.coffee'
                         'src/spec/visembeds.coffee'
-
                         ]
 
         sass:

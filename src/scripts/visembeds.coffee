@@ -93,9 +93,11 @@ class ContentEdit.Visembed extends ContentEdit.ResizableElement
     # Set the size using style
     if @_attributes['width']
       style += "width:#{ @_attributes['width'] }px;"
+      @_domElement.setAttribute('width', @_attributes['width'])
 
     if @_attributes['height']
       style += "height:#{ @_attributes['height'] }px;"
+      @_domElement.setAttribute('height', @_attributes['height'])
 
     @_domElement.setAttribute('style', style)
 
@@ -117,7 +119,7 @@ class ContentEdit.Visembed extends ContentEdit.ResizableElement
     'PreText': ContentEdit.Element._dropBoth
     'Static': ContentEdit.Element._dropBoth
     'Text': ContentEdit.Element._dropBoth
-    'Visembed': ContentEdit.Element._dropBoth
+    'Visembed': ContentEdit.Element._dropVert
 
   # List of allowed drop placements for the class, supported values are:
   @placements: ['above', 'below', 'left', 'right', 'center']
@@ -125,10 +127,16 @@ class ContentEdit.Visembed extends ContentEdit.ResizableElement
   # Class methods
 
   @fromDOMElement: (domElement) ->
+
+    attributes = @getDOMElementAttributes(domElement)
+
+    # If the width and height of the image haven't been specified, we query
+    # the DOM for these values.
+
     # Convert an element (DOM) to an element of this type
     return new @(
       domElement.tagName,
-      @getDOMElementAttributes(domElement)
+      attributes
     )
 
 

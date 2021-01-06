@@ -40,6 +40,7 @@ class ContentEdit.List extends ContentEdit.ElementCollection
         'Static': ContentEdit.Element._dropVert
         'Text': ContentEdit.Element._dropVert
         'Video': ContentEdit.Element._dropBoth
+        'Visembed': ContentEdit.Element._dropBoth
 
     # Class methods
 

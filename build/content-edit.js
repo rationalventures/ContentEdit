@@ -2880,6 +2880,9 @@
       if (corner) {
         return this.resize(corner, ev.clientX, ev.clientY);
       } else {
+        if (ev.noContentMove) {
+          return;
+        }
         clearTimeout(this._dragTimeout);
         return this._dragTimeout = setTimeout((function(_this) {
           return function() {
@@ -4416,7 +4419,8 @@
       'PreText': ContentEdit.Element._dropBoth,
       'Static': ContentEdit.Element._dropBoth,
       'Text': ContentEdit.Element._dropBoth,
-      'Video': ContentEdit.Element._dropBoth
+      'Video': ContentEdit.Element._dropBoth,
+      'Visembed': ContentEdit.Element._dropBoth
     };
 
     Video.placements = ['above', 'below', 'left', 'right', 'center'];
@@ -4483,7 +4487,8 @@
       'PreText': ContentEdit.Element._dropVert,
       'Static': ContentEdit.Element._dropVert,
       'Text': ContentEdit.Element._dropVert,
-      'Video': ContentEdit.Element._dropBoth
+      'Video': ContentEdit.Element._dropBoth,
+      'Visembed': ContentEdit.Element._dropBoth
     };
 
     List.fromDOMElement = function(domElement) {
@@ -5047,7 +5052,8 @@
       'Static': ContentEdit.Element._dropVert,
       'Table': ContentEdit.Element._dropVert,
       'Text': ContentEdit.Element._dropVert,
-      'Video': ContentEdit.Element._dropBoth
+      'Video': ContentEdit.Element._dropBoth,
+      'Visembed': ContentEdit.Element._dropBoth
     };
 
     Table.fromDOMElement = function(domElement) {
@@ -5617,9 +5623,11 @@
       style = '';
       if (this._attributes['width']) {
         style += "width:" + this._attributes['width'] + "px;";
+        this._domElement.setAttribute('width', this._attributes['width']);
       }
       if (this._attributes['height']) {
         style += "height:" + this._attributes['height'] + "px;";
+        this._domElement.setAttribute('height', this._attributes['height']);
       }
       this._domElement.setAttribute('style', style);
       this._domElement.setAttribute('data-ce-title', "Visualization");
@@ -5636,13 +5644,15 @@
       'PreText': ContentEdit.Element._dropBoth,
       'Static': ContentEdit.Element._dropBoth,
       'Text': ContentEdit.Element._dropBoth,
-      'Visembed': ContentEdit.Element._dropBoth
+      'Visembed': ContentEdit.Element._dropVert
     };
 
     Visembed.placements = ['above', 'below', 'left', 'right', 'center'];
 
     Visembed.fromDOMElement = function(domElement) {
-      return new this(domElement.tagName, this.getDOMElementAttributes(domElement));
+      var attributes;
+      attributes = this.getDOMElementAttributes(domElement);
+      return new this(domElement.tagName, attributes);
     };
 
     return Visembed;
@@ -5650,5 +5660,103 @@
   })(ContentEdit.ResizableElement);
 
   ContentEdit.TagNames.get().register(ContentEdit.Visembed, 'visembed');
+
+  ContentEdit.Datacell = (function(_super) {
+    __extends(Datacell, _super);
+
+    function Datacell(tagName, attributes, sources) {
+      if (sources == null) {
+        sources = [];
+      }
+      Datacell.__super__.constructor.call(this, tagName, attributes);
+      this.sources = sources;
+    }
+
+    Datacell.prototype.cssTypeName = function() {
+      return 'datacell';
+    };
+
+    Datacell.prototype.type = function() {
+      return 'datacell';
+    };
+
+    Datacell.prototype.typeName = function() {
+      return 'Code Block';
+    };
+
+    Datacell.prototype._title = function() {
+      return "Code Block";
+    };
+
+    Datacell.prototype.createDraggingDOMElement = function() {
+      var helper;
+      if (!this.isMounted()) {
+        return;
+      }
+      helper = Datacell.__super__.createDraggingDOMElement.call(this);
+      helper.innerHTML = this._title();
+      return helper;
+    };
+
+    Datacell.prototype.html = function(indent) {
+      var html, le, style;
+      if (indent == null) {
+        indent = '';
+      }
+      le = ContentEdit.LINE_ENDINGS;
+      style = '';
+      if (this._attributes['style']) {
+        delete this._attributes['style'];
+      }
+      html = "" + indent + "<datacell  " + (this._attributesToString()) + " style=\"" + style + "\"><cell></cell></datacell>";
+      return html;
+    };
+
+    Datacell.prototype.mount = function() {
+      var style;
+      this._domElement = document.createElement('datacell');
+      if (this._attributes['class']) {
+        this._domElement.setAttribute('class', this._attributes['class']);
+      } else {
+        this._domElement.setAttribute('class', 'datacell');
+      }
+      if (!this._attributes['id']) {
+        this._attributes['id'] = "vis-" + performance.now().toString().replace('.', 7);
+      }
+      this._domElement.setAttribute('id', this._attributes['id']);
+      style = '';
+      this._domElement.setAttribute('style', style);
+      this._domElement.setAttribute('data-ce-title', "Code Block");
+      this._domElement.appendChild(document.createElement('cell'));
+      return Datacell.__super__.mount.call(this);
+    };
+
+    Datacell.prototype.unmount = function() {
+      return Datacell.__super__.unmount.call(this);
+    };
+
+    Datacell.droppers = {
+      'Image': ContentEdit.Element._dropBoth,
+      'ImageFixture': ContentEdit.Element._dropVert,
+      'List': ContentEdit.Element._dropVert,
+      'PreText': ContentEdit.Element._dropVert,
+      'Static': ContentEdit.Element._dropVert,
+      'Table': ContentEdit.Element._dropVert,
+      'Text': ContentEdit.Element._dropVert,
+      'Video': ContentEdit.Element._dropVert,
+      'Visembed': ContentEdit.Element._dropVert
+    };
+
+    Datacell.placements = ['above', 'below', 'left', 'right', 'center'];
+
+    Datacell.fromDOMElement = function(domElement) {
+      return new this(domElement.tagName, this.getDOMElementAttributes(domElement));
+    };
+
+    return Datacell;
+
+  })(ContentEdit.Element);
+
+  ContentEdit.TagNames.get().register(ContentEdit.Datacell, 'datacell');
 
 }).call(this);

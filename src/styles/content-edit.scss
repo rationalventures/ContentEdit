@@ -257,7 +257,7 @@ $highlight-color: #f39c12 !default;
      */
     &--focused,
     &--over {
-        background-color: rgba($highlight-color, 0.1);
+        background-color: rgb(238, 240, 242);
         outline: none;
 
         /**
@@ -268,7 +268,7 @@ $highlight-color: #f39c12 !default;
         &.ce-element--type-image-fixture,
         &.ce-element--type-video {
             background-color: #333;
-            outline: 4px solid rgba($highlight-color, 0.35);
+            outline: 4px solid rgb(238, 240, 242);
         }
     }
 
@@ -339,6 +339,7 @@ $highlight-color: #f39c12 !default;
     &--type-list-item-text,
     &--type-pre-text,
     &--type-table,
+    &--type-datacell,
     &--type-table-row,
     &--type-text {
 

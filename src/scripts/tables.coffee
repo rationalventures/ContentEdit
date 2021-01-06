@@ -82,8 +82,9 @@ class ContentEdit.Table extends ContentEdit.ElementCollection
         'Table': ContentEdit.Element._dropVert
         'Text': ContentEdit.Element._dropVert
         'Video': ContentEdit.Element._dropBoth
+        'Visembed': ContentEdit.Element._dropBoth
 
-    # Class methods
+# Class methods
 
     @fromDOMElement: (domElement) ->
         # Convert an element (DOM) to an element of this type
