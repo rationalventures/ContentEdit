@@ -4038,7 +4038,7 @@
         return;
       }
       helper = Image.__super__.createDraggingDOMElement.call(this);
-      helper.style.backgroundImage = "url('" + this._attributes['src'] + "')";
+      helper.style.backgroundImage = "url('" + this._attributes['src'] + "'); background-size: contain;";
       return helper;
     };
 
@@ -4070,12 +4070,15 @@
       }
       this._domElement.setAttribute('class', classes);
       style = this._attributes['style'] ? this._attributes['style'] : '';
-      style += "background-image:url('" + this._attributes['src'] + "');";
+      style += "background-image:url('" + this._attributes['src'] + "'); background-size: contain;";
       if (this._attributes['width']) {
         style += "width:" + this._attributes['width'] + "px;";
       }
       if (this._attributes['height']) {
         style += "height:" + this._attributes['height'] + "px;";
+      }
+      if (this._attributes['xheight']) {
+        style += "height:" + this._attributes['xheight'] + "px;";
       }
       this._domElement.setAttribute('style', style);
       return Image.__super__.mount.call(this);
@@ -4145,9 +4148,25 @@
           height = domElement.clientHeight;
         }
       }
+      if (attributes['xheight']) {
+        height = attributes['xheight'];
+      }
       attributes['width'] = width;
       attributes['height'] = height;
       return new this(attributes, a);
+    };
+
+    Image.prototype._attributesToString = function() {
+      var attributes, k, v, _ref;
+      attributes = {};
+      _ref = this._attributes;
+      for (k in _ref) {
+        v = _ref[k];
+        attributes[k] = v;
+      }
+      attributes['xheight'] = attributes['height'];
+      delete attributes['height'];
+      return ' ' + ContentEdit.attributesToString(attributes);
     };
 
     return Image;
@@ -4212,7 +4231,7 @@
       this._domElement.setAttribute('class', classes);
       style = this._attributes['style'] ? this._attributes['style'] : '';
       style = style.replace(/background-image:.+?(;|$)/i, '');
-      style = [style.trim(), "background-image:url('" + (this.src()) + "');"].join(' ');
+      style = [style.trim(), "background-image:url('" + (this.src()) + "');", "background-size: contain;"].join(' ');
       this._domElement.setAttribute('style', style.trim());
       return ImageFixture.__super__.mount.call(this);
     };
@@ -4248,10 +4267,10 @@
       if (this._attributes['style']) {
         style = this._attributes['style'] ? this._attributes['style'] : '';
         style = style.replace(/background-image:.+?(;|$)/i, '');
-        style = [style.trim(), "background-image:url('" + (this.src()) + "');"].join(' ');
+        style = [style.trim(), "background-image:url('" + (this.src()) + "'); background-size: contain;"].join(' ');
         this._attributes['style'] = style.trim();
       } else {
-        this._attributes['style'] = "background-image:url('" + (this.src()) + "');";
+        this._attributes['style'] = "background-image:url('" + (this.src()) + "'); background-size: contain;";
       }
       attributes = {};
       _ref = this._attributes;
@@ -4262,6 +4281,8 @@
         }
         attributes[k] = v;
       }
+      attributes['xheight'] = attributes['height'];
+      delete attributes['height'];
       return ' ' + ContentEdit.attributesToString(attributes);
     };
 

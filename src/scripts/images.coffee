@@ -39,12 +39,13 @@ class ContentEdit.Image extends ContentEdit.ResizableElement
         helper = super()
 
         # Set the background image for the helper element
-        helper.style.backgroundImage = "url('#{ @_attributes['src'] }')"
+        helper.style.backgroundImage = "url('#{ @_attributes['src'] }'); background-size: contain;"
 
         return helper
 
     html: (indent='') ->
         # Return a HTML string for the node
+
         img = "#{ indent }<img#{ @_attributesToString() }>"
         if @a
             le = ContentEdit.LINE_ENDINGS
@@ -75,14 +76,18 @@ class ContentEdit.Image extends ContentEdit.ResizableElement
 
         # Set the background image for the
         style = if @_attributes['style'] then @_attributes['style'] else ''
-        style += "background-image:url('#{ @_attributes['src'] }');"
+        style += "background-image:url('#{ @_attributes['src'] }'); background-size: contain;"
 
         # Set the size using style
         if @_attributes['width']
             style += "width:#{ @_attributes['width'] }px;"
 
+        # Disable this since this causes the image to render in bad aspect ratios on mobile
+        # when screen width is < image width.
         if @_attributes['height']
-            style += "height:#{ @_attributes['height'] }px;"
+           style += "height:#{ @_attributes['height'] }px;"
+        if @_attributes['xheight']
+            style += "height:#{ @_attributes['xheight'] }px;"
 
         @_domElement.setAttribute('style', style)
 
@@ -157,10 +162,25 @@ class ContentEdit.Image extends ContentEdit.ResizableElement
             else
                 height = domElement.clientHeight
 
+        if attributes['xheight']
+            height = attributes['xheight']
+
         attributes['width'] = width
         attributes['height'] = height
 
         return new @(attributes, a)
+
+    _attributesToString: () ->
+        # Build the table of attributes to compile into the string
+        attributes = {}
+        for k, v of @_attributes
+            attributes[k] = v
+
+        attributes['xheight'] = attributes['height']
+        delete attributes['height']
+
+        # Compile and return the string
+        return ' ' + ContentEdit.attributesToString(attributes)
 
 
 # Register `ContentEdit.Image` the class with associated tag names
@@ -247,7 +267,7 @@ class ContentEdit.ImageFixture extends ContentEdit.Element
         style = style.replace(/background-image:.+?(;|$)/i, '')
 
         # Set the background image for the element
-        style = [style.trim(), "background-image:url('#{ @src() }');"].join(' ')
+        style = [style.trim(), "background-image:url('#{ @src() }');", "background-size: contain;"].join(' ')
 
         @_domElement.setAttribute('style', style.trim())
 
@@ -299,11 +319,11 @@ class ContentEdit.ImageFixture extends ContentEdit.Element
             # Set the background image for the element
             style = [
                 style.trim(),
-                "background-image:url('#{ @src() }');"
+                "background-image:url('#{ @src() }'); background-size: contain;"
             ].join(' ')
             @_attributes['style'] = style.trim()
         else
-            @_attributes['style'] = "background-image:url('#{ @src() }');"
+            @_attributes['style'] = "background-image:url('#{ @src() }'); background-size: contain;"
 
         # Build the table of attributes to compile into the string
         attributes = {}
@@ -311,6 +331,9 @@ class ContentEdit.ImageFixture extends ContentEdit.Element
             if k is 'alt'
                 continue
             attributes[k] = v
+
+        attributes['xheight'] = attributes['height']
+        delete attributes['height']
 
         # Compile and return the string
         return ' ' + ContentEdit.attributesToString(attributes)
